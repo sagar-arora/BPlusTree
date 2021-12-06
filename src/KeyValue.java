@@ -2,10 +2,10 @@ import java.util.List;
 
 public class KeyValue<K extends Comparable<K>, V> {
     K key;
-    List<V> vals;
-    public KeyValue(K key, List<V> vals) {
+    V val;
+    public KeyValue(K key, V val) {
         this.key = key;
-        this.vals = vals;
+        this.val = val;
     }
 
 
