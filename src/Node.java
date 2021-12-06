@@ -3,7 +3,7 @@ import java.util.List;
 
 public abstract class Node<K extends Comparable<K>, V> {
 
-    public abstract Node<K, V> insert(K key, V val);
+    public abstract Pair<K, Node<K, V>> insert(K key, V val);
     public abstract Node<K, V> search(K key);
     public boolean isLeafNode;
 

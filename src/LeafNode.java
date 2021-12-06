@@ -23,23 +23,25 @@ public class LeafNode<K extends Comparable<K>, V> extends Node<K, V> {
     }
 
 
-    public Node<K, V> split() {
+    public Pair<K, Node<K, V>> split() {
         int m = (int) Math.ceil((double) (BPlusTree.D - 1) / 2);
 
         Node<K, V> newNode = new LeafNode<>(values.subList(m, values.size()), keys.subList(m, keys.size()));
         values.subList(m, values.size()).clear();
         keys.subList(m, keys.size()).clear();
 
-        return newNode;
+        return new Pair<>(keys.get(0), newNode);
     }
 
-    public Node<K, V> insert(K key, V val) {
+    public Pair<K, Node<K, V>> insert(K key, V val) {
         KeyValue<K, V> keyValue = new KeyValue<>(key, val);
 
         if (isOverflow()) {
-            LeafNode<K, V> newNode = (LeafNode<K, V>) split();
+            Pair<K, Node<K,V>> newNodePair = this.split();
+            K newNodeOffset = newNodePair.key;
+            LeafNode<K,V> newNode = (LeafNode<K, V>) newNodePair.val;
             // compare with the last key
-            if (key.compareTo(this.keys.get(keys.size() - 1)) < 0) {
+            if (key.compareTo(newNodeOffset) < 0) {
                 this.values.add(keyValue);
                 this.keys.add(key);
             } else {
@@ -47,7 +49,7 @@ public class LeafNode<K extends Comparable<K>, V> extends Node<K, V> {
                 newNode.keys.add(key);
             }
 
-            return newNode;
+            return newNodePair;
         } else {
             int loc = Collections.binarySearch(keys, key);
             values.add(loc, keyValue);
