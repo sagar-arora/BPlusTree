@@ -1,16 +1,8 @@
 package code.bplustree;
 
+import java.util.*;
 
-import lombok.ToString;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-@ToString
 public class InternalNode<K extends Comparable<K>, V> extends Node<K, V> {
-
-    public List<Node<K, V>> childrens = new ArrayList<>();
 
     public InternalNode(List<K> keys, List<Node<K, V>> childrens) {
         super(keys);
@@ -34,11 +26,15 @@ public class InternalNode<K extends Comparable<K>, V> extends Node<K, V> {
     public Pair<K, Node<K, V>> split() {
         int m = (int) Math.ceil((double) (BPlusTree.D - 1) / 2);
 
-        Node<K, V> newNode = new InternalNode<>(keys.subList(m, keys.size()), childrens.subList(m, childrens.size()));
-        keys.subList(m, keys.size()).clear();
-        childrens.subList(m, keys.size()).clear();
+        K pivotKey = keys.get(m);
+        keys.remove(m);
+        Node<K, V> newNode = new InternalNode<>(new ArrayList<>(keys.subList(m, keys.size())),
+                new ArrayList<>(childrens.subList(m + 1, childrens.size())));
 
-        return new Pair<>(keys.get(0), newNode);
+
+        keys.subList(m, keys.size()).clear();
+        childrens.subList(m + 1, childrens.size()).clear();
+        return new Pair<>(pivotKey, newNode);
     }
 
     public void insertNode(K newChildPivot, Node<K, V> newChildNode) {
@@ -62,18 +58,10 @@ public class InternalNode<K extends Comparable<K>, V> extends Node<K, V> {
                 if (newChildPivot.compareTo(newNodePivot) < 0) {
                    this.insertNode(newChildPivot, newChildNode);
                 } else {
-                    /*int loc = Collections.binarySearch(keys, key);
-                    loc = loc < 0 ? -1 * (loc + 1) : loc;
-                    newNode.keys.add(loc, newChildPivot);
-                    newNode.childrens.add(loc, newChildNode);*/
                     newNode.insertNode(newChildPivot, newChildNode);
                 }
                 return newNodePair;
             } else {
-                /*int loc = Collections.binarySearch(keys, key);
-                loc = loc < 0 ? -1 * (loc + 1) : loc;
-                this.keys.add(loc, newChildPivot);
-                this.childrens.add(loc, newChildNode);*/
                 this.insertNode(newChildPivot, newChildNode);
                 return null;
             }
@@ -88,5 +76,31 @@ public class InternalNode<K extends Comparable<K>, V> extends Node<K, V> {
     public Node<K, V> search(K key) {
         Node<K, V> node = chooseSubtree(key);
         return node.search(key);
+    }
+
+/*    public String toString() {
+        return "[" + String.join(",", keys.stream().map(x -> x.toString()).toList()) + "]";
+    }*/
+
+    public void printTree() {
+        String val = this.toString();
+        System.out.println(val);
+        Queue<Node<K, V>> queue = new LinkedList<>(this.getChildrens());
+        int count = 0;
+        while (!queue.isEmpty()) {
+            System.out.println("level " + (++count));
+            int sze = queue.size();
+            for (int i = 0; i < sze; i++) {
+                Node<K, V> node = queue.poll();
+                System.out.print(node.toString());
+                System.out.print(" ");
+                for (Node<K, V> children : node.childrens) {
+                    queue.offer(children);
+                }
+            }
+            System.out.println();
+        }
+
+        //count++;
     }
 }

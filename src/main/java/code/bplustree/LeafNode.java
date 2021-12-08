@@ -8,7 +8,6 @@ import java.util.Collections;
 import java.util.List;
 
 @EqualsAndHashCode
-@ToString
 public class LeafNode<K extends Comparable<K>, V> extends Node<K, V> {
     LeafNode<K, V> next;
     LeafNode<K, V> previous;

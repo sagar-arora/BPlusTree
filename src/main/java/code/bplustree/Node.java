@@ -38,6 +38,8 @@ public abstract class Node<K extends Comparable<K>, V> {
 
     public List<K> keys;
 
+    public List<Node<K, V>> childrens = new ArrayList<>();
+
     public Node() {
         this.keys = new ArrayList<>();
     }
@@ -56,6 +58,10 @@ public abstract class Node<K extends Comparable<K>, V> {
 
     public int getSize() {
         return this.keys.size();
+    }
+
+    public String toString() {
+        return "[" + String.join(",", keys.stream().map(Object::toString).toList()) + "]";
     }
 }
 

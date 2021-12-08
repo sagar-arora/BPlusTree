@@ -72,5 +72,64 @@ public class InternalNodeTest {
         //System.out.println(internalNode1);
     }
 
+    @Test
+    public void testInsert3() {
+        InternalNode<Integer, String> root = (InternalNode<Integer, String>)BuildBPlusTree.createBPlusTreeOfLevel3();
+        root.insert(5, "5");
+        InternalNode<Integer, String> internalNode1 = (InternalNode<Integer, String>) root.getChildrens().get(0);
+        LeafNode<Integer, String> leafNode = (LeafNode<Integer, String>)internalNode1.getChildrens().get(0);
+
+        for (int key: leafNode.keys) {
+            System.out.print(key);
+            System.out.print(",");
+        }
+
+        System.out.println();
+        root.insert(6, "6");
+        for (int key: leafNode.keys) {
+            System.out.print(key);
+            System.out.print(",");
+        }
+        System.out.println();
+        for (int key: internalNode1.keys) {
+            System.out.print(key);
+            System.out.print(",");
+        }
+
+        System.out.println();
+        root.insert(7, "7");
+        for (int key: leafNode.keys) {
+            System.out.print(key);
+            System.out.print(",");
+        }
+        System.out.println();
+        for (int key: internalNode1.keys) {
+            System.out.print(key);
+            System.out.print(",");
+        }
+
+        System.out.println();
+        for (int key: root.keys) {
+            System.out.print(key);
+            System.out.print(",");
+        }
+
+        //System.out.println(internalNode1);
+    }
+
+    @Test
+    public void testInsert4() {
+        InternalNode<Integer, String> root = (InternalNode<Integer, String>)BuildBPlusTree.createBPlusTreeOfLevel3();
+        root.insert(5, "5");
+      //  InternalNode<Integer, String> internalNode1 = (InternalNode<Integer, String>) root.getChildrens().get(0);
+      //  LeafNode<Integer, String> leafNode = (LeafNode<Integer, String>)internalNode1.getChildrens().get(0);
+        root.printTree();
+        System.out.println();
+        root.insert(6, "6");
+        root.printTree();
+        root.insert(7, "7");
+        root.printTree();
+    }
+
 
 }
