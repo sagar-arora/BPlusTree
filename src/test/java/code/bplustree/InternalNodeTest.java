@@ -39,5 +39,38 @@ public class InternalNodeTest {
         Assert.assertEquals(childrens.get(3), node);
     }
 
+    @Test
+    public void testInsert1() {
+        InternalNode<Integer, String> root = (InternalNode<Integer, String>)BuildBPlusTree.createBPlusTreeOfLevel3();
+        root.insert(5, "5");
+        InternalNode<Integer, String> internalNode1 = (InternalNode<Integer, String>) root.getChildrens().get(0);
+        LeafNode leafNode = (LeafNode<Integer, String>)internalNode1.getChildrens().get(0);
+
+        System.out.println(leafNode);
+    }
+
+    @Test
+    public void testInsert2() {
+        InternalNode<Integer, String> root = (InternalNode<Integer, String>)BuildBPlusTree.createBPlusTreeOfLevel3();
+        root.insert(5, "5");
+        InternalNode<Integer, String> internalNode1 = (InternalNode<Integer, String>) root.getChildrens().get(0);
+        LeafNode<Integer, String> leafNode = (LeafNode<Integer, String>)internalNode1.getChildrens().get(0);
+
+        for (int key: leafNode.keys) {
+            System.out.print(key);
+        }
+
+        System.out.println();
+        root.insert(6, "6");
+        for (int key: leafNode.keys) {
+            System.out.print(key);
+        }
+        System.out.println();
+        for (int key: internalNode1.keys) {
+            System.out.print(key);
+        }
+        //System.out.println(internalNode1);
+    }
+
 
 }

@@ -1,23 +1,25 @@
 package code.bplustree;
 
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 @EqualsAndHashCode
+@ToString
 public class LeafNode<K extends Comparable<K>, V> extends Node<K, V> {
     LeafNode<K, V> next;
     LeafNode<K, V> previous;
     List<KeyValue<K, V>> values = new ArrayList<>();
 
-    LeafNode(List<K> keys, List<KeyValue<K, V>> values) {
+    public LeafNode(List<K> keys, List<KeyValue<K, V>> values) {
         super(keys);
         this.values = values;
     }
 
-    LeafNode(List<K> keys) {
+    public LeafNode(List<K> keys) {
         super(keys);
         List<KeyValue<K, V>> values = new ArrayList<>();
         for (K key : keys) {
@@ -27,7 +29,7 @@ public class LeafNode<K extends Comparable<K>, V> extends Node<K, V> {
         this.values = values;
     }
 
-    LeafNode() {
+    public LeafNode() {
         this(new ArrayList<K>(), new ArrayList<KeyValue<K, V>>());
     }
 
@@ -36,6 +38,19 @@ public class LeafNode<K extends Comparable<K>, V> extends Node<K, V> {
         return keys;
     }
 
+    void insertEntry(K key, V val) {
+        int loc = Collections.binarySearch(this.keys, key);
+        // duplicate entry, update value.
+        if (loc > 0) {
+            this.values.remove(loc);
+            this.keys.add(key);
+            this.values.add(loc, new KeyValue<>(key, val));
+        } else {
+            loc = -1 * (loc + 1);
+            this.keys.add(loc, key);
+            this.values.add(loc, new KeyValue<>(key, val));
+        }
+    }
 
     public Pair<K, Node<K, V>> split() {
         int m = (int) Math.ceil((double) (BPlusTree.D - 1) / 2);
@@ -56,27 +71,23 @@ public class LeafNode<K extends Comparable<K>, V> extends Node<K, V> {
         return new Pair<>(newNode.keys.get(0), newNode);
     }
 
+
     public Pair<K, Node<K, V>> insert(K key, V val) {
         KeyValue<K, V> keyValue = new KeyValue<>(key, val);
 
         if (isOverflow()) {
             Pair<K, Node<K,V>> newNodePair = this.split();
-            K newNodeOffset = newNodePair.key;
-            LeafNode<K,V> newNode = (LeafNode<K, V>) newNodePair.val;
+            K newNodeOffset = newNodePair.getKey();
+            LeafNode<K,V> newNode = (LeafNode<K, V>) newNodePair.getVal();
             // compare with the last key
             if (key.compareTo(newNodeOffset) < 0) {
-                this.values.add(keyValue);
-                this.keys.add(key);
+                this.insertEntry(key, val);
             } else {
-                newNode.values.add(keyValue);
-                newNode.keys.add(key);
+                newNode.insertEntry(key, val);
             }
-
             return newNodePair;
         } else {
-            int loc = Collections.binarySearch(keys, key);
-            values.add(loc, keyValue);
-            keys.add(loc, key);
+            this.insertEntry(key, val);
             return null;
         }
     }

@@ -19,14 +19,20 @@ public class BuildBPlusTree {
     }
 
     public static LeafNode<Integer, String> createBTreeWithOneNodeOnlyWithFourKeys() {
-        List<Integer> list = new ArrayList<>(ImmutableList.of(10, 15, 20, 25));
+       // List<Integer> list = new ArrayList<>(ImmutableList.of(10, 15, 20, 25));
 
-        return new LeafNode<>(list);
+        return createLeafNode(ImmutableList.of(10, 15, 20, 25));
     }
 
     public static LeafNode<Integer, String> createBTreeWithOneNodeOnlyWithThreeKeys() {
         List<Integer> list = new ArrayList<>(ImmutableList.of(10, 15, 20));
         return new LeafNode<>(list);
+    }
+
+    public static InternalNode<Integer, String> createInternalNode() {
+        InternalNode<Integer, String> internalNode1 = new InternalNode<>();
+        internalNode1.keys = new ArrayList<>(ImmutableList.of(9, 11));
+        return internalNode1;
     }
 
     public static Node<Integer, String> createBPlusTreeOfLevel3() {
