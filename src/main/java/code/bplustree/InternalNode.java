@@ -1,10 +1,13 @@
 package code.bplustree;
 
 
+import lombok.ToString;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@ToString
 public class InternalNode<K extends Comparable<K>, V> extends Node<K, V> {
 
     public List<Node<K, V>> childrens = new ArrayList<>();
@@ -38,31 +41,41 @@ public class InternalNode<K extends Comparable<K>, V> extends Node<K, V> {
         return new Pair<>(keys.get(0), newNode);
     }
 
+    public void insertNode(K newChildPivot, Node<K, V> newChildNode) {
+        int loc = Collections.binarySearch(this.keys, newChildPivot);
+        loc = loc < 0 ? -1 * (loc + 1) : loc;
+        this.keys.add(loc, newChildPivot);
+        this.childrens.add(loc + 1, newChildNode);
+    }
+
     public Pair<K, Node<K, V>> insert(K key, V val) {
         Node<K,V> childNode = this.chooseSubtree(key);
         Pair<K, Node<K, V>> newChildNodePair = childNode.insert(key, val);
-        K newChildPivot = newChildNodePair.getKey();
-        Node<K, V> newChildNode = newChildNodePair.getVal();
-        if (newChildNode != null) {
+        if (newChildNodePair != null) {
+            K newChildPivot = newChildNodePair.getKey();
+            Node<K, V> newChildNode = newChildNodePair.getVal();
             if (isOverflow()) {
                 Pair<K, Node<K, V>> newNodePair = this.split();
                 K newNodePivot = newNodePair.key;
                 InternalNode<K, V> newNode = (InternalNode<K, V>) newNodePair.val;
                 // compare with the last key
                 if (newChildPivot.compareTo(newNodePivot) < 0) {
-                    int loc = Collections.binarySearch(keys, key);
-                    this.keys.add(loc, newChildPivot);
-                    this.childrens.add(loc, newChildNode);
+                   this.insertNode(newChildPivot, newChildNode);
                 } else {
-                    int loc = Collections.binarySearch(keys, key);
+                    /*int loc = Collections.binarySearch(keys, key);
+                    loc = loc < 0 ? -1 * (loc + 1) : loc;
                     newNode.keys.add(loc, newChildPivot);
-                    newNode.childrens.add(loc, newChildNode);
+                    newNode.childrens.add(loc, newChildNode);*/
+                    newNode.insertNode(newChildPivot, newChildNode);
                 }
                 return newNodePair;
             } else {
-                int loc = Collections.binarySearch(keys, key);
+                /*int loc = Collections.binarySearch(keys, key);
+                loc = loc < 0 ? -1 * (loc + 1) : loc;
                 this.keys.add(loc, newChildPivot);
-                this.childrens.add(loc, newChildNode);
+                this.childrens.add(loc, newChildNode);*/
+                this.insertNode(newChildPivot, newChildNode);
+                return null;
             }
         }
         return null;

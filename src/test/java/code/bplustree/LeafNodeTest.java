@@ -26,4 +26,21 @@ public class LeafNodeTest {
             System.out.println(i);
         }
     }
+
+    @Test
+    public void testInsert() {
+        LeafNode<Integer, String> leafNode = BuildBPlusTree.createBTreeWithOneNodeOnlyWithFourKeys();
+        BPlusTree.D = 4;
+        Pair<Integer, Node<Integer, String>> nodePair = leafNode.insert(30, "30");
+
+        for (Integer i : nodePair.getVal().keys) {
+            System.out.println(i);
+        }
+
+        System.out.println("sepeartor");
+        for (Integer i : leafNode.keys) {
+            System.out.println(i);
+        }
+    }
+
 }
