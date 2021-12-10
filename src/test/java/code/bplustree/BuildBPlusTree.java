@@ -1,7 +1,6 @@
 package code.bplustree;
 
 import com.google.common.collect.ImmutableList;
-import org.checkerframework.checker.units.qual.K;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,23 +44,23 @@ public class BuildBPlusTree {
         //InternalNode<Integer, String> internalNode3 = new InternalNode<>();
         //internalNode1.keys = new ArrayList<>(ImmutableList.of(180, 200, 220));
 
-        internalNode.childrens.add(internalNode1);
-        internalNode.childrens.add(internalNode2);
+        internalNode.children.add(internalNode1);
+        internalNode.children.add(internalNode2);
         //internalNode.childrens.add(internalNode3);
 
         LeafNode<Integer, String> leafNode1 = createLeafNode(ImmutableList.of(1, 4));
         LeafNode<Integer, String> leafNode2 = createLeafNode(ImmutableList.of(9, 10));
         LeafNode<Integer, String> leafNode3 = createLeafNode(ImmutableList.of(11, 12));
 
-        internalNode1.childrens.add(leafNode1);
-        internalNode1.childrens.add(leafNode2);
-        internalNode1.childrens.add(leafNode3);
+        internalNode1.children.add(leafNode1);
+        internalNode1.children.add(leafNode2);
+        internalNode1.children.add(leafNode3);
 
         LeafNode<Integer, String> leafNode4 = createLeafNode(ImmutableList.of(13, 15));
         LeafNode<Integer, String> leafNode5 = createLeafNode(ImmutableList.of(16, 20, 25));
 
-        internalNode2.childrens.add(leafNode4);
-        internalNode2.childrens.add(leafNode5);
+        internalNode2.children.add(leafNode4);
+        internalNode2.children.add(leafNode5);
         //LeafNode<Integer, String> leafNode6 = createLeafNode(ImmutableList.of(51, 55, 69));
 
         /*

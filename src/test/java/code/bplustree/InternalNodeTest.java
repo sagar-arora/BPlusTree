@@ -2,7 +2,6 @@ package code.bplustree;
 
 import com.google.common.collect.ImmutableList;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
@@ -43,8 +42,8 @@ public class InternalNodeTest {
     public void testInsert1() {
         InternalNode<Integer, String> root = (InternalNode<Integer, String>)BuildBPlusTree.createBPlusTreeOfLevel3();
         root.insert(5, "5");
-        InternalNode<Integer, String> internalNode1 = (InternalNode<Integer, String>) root.getChildrens().get(0);
-        LeafNode leafNode = (LeafNode<Integer, String>)internalNode1.getChildrens().get(0);
+        InternalNode<Integer, String> internalNode1 = (InternalNode<Integer, String>) root.getChildren().get(0);
+        LeafNode leafNode = (LeafNode<Integer, String>)internalNode1.getChildren().get(0);
 
         System.out.println(leafNode);
     }
@@ -53,8 +52,8 @@ public class InternalNodeTest {
     public void testInsert2() {
         InternalNode<Integer, String> root = (InternalNode<Integer, String>)BuildBPlusTree.createBPlusTreeOfLevel3();
         root.insert(5, "5");
-        InternalNode<Integer, String> internalNode1 = (InternalNode<Integer, String>) root.getChildrens().get(0);
-        LeafNode<Integer, String> leafNode = (LeafNode<Integer, String>)internalNode1.getChildrens().get(0);
+        InternalNode<Integer, String> internalNode1 = (InternalNode<Integer, String>) root.getChildren().get(0);
+        LeafNode<Integer, String> leafNode = (LeafNode<Integer, String>)internalNode1.getChildren().get(0);
 
         for (int key: leafNode.keys) {
             System.out.print(key);
@@ -76,8 +75,8 @@ public class InternalNodeTest {
     public void testInsert3() {
         InternalNode<Integer, String> root = (InternalNode<Integer, String>)BuildBPlusTree.createBPlusTreeOfLevel3();
         root.insert(5, "5");
-        InternalNode<Integer, String> internalNode1 = (InternalNode<Integer, String>) root.getChildrens().get(0);
-        LeafNode<Integer, String> leafNode = (LeafNode<Integer, String>)internalNode1.getChildrens().get(0);
+        InternalNode<Integer, String> internalNode1 = (InternalNode<Integer, String>) root.getChildren().get(0);
+        LeafNode<Integer, String> leafNode = (LeafNode<Integer, String>)internalNode1.getChildren().get(0);
 
         for (int key: leafNode.keys) {
             System.out.print(key);
@@ -128,6 +127,18 @@ public class InternalNodeTest {
         root.insert(6, "6");
         root.printTree();
         root.insert(7, "7");
+        root.printTree();
+        root.insert(2, "2");
+        root.printTree();
+        root.insert(3, "2");
+        root.printTree();
+        root.insert(0, "0");
+        root.printTree();
+        root.insert(-1, "-1");
+        root.printTree();
+        root.insert(-2, "-2");
+        root.printTree();
+        root.insert(40, "40");
         root.printTree();
     }
 
